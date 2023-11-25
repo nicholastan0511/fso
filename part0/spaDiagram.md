@@ -1,4 +1,4 @@
-spaDiagram
+sequenceDiagram
     participant browser
     participant server
 
