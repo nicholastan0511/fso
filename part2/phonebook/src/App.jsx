@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import Filter from './components/Filter'
-import axios from 'axios'
+import Notification from './components/Notification'
+import personTool from './services/persons.js'
 
 const App = () => {
 
@@ -14,43 +15,54 @@ const App = () => {
   ]) 
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => setPersons(response.data))
+      personTool 
+        .getAll()
+        .then(returnedPersons => setPersons(returnedPersons))
   }, [])
   
   const [newName, setNewName] = useState('Bob')
   const [newNum, setNewNum] = useState('')
   const [filter, setFilter] = useState('')
+  const [message, setMes] = useState(null) 
 
   const addNewPerson = (event) => {
     event.preventDefault()
     //if name already exists
-    if (registered(persons, newName, 'name')) {
-      alert(`${newName} is already registered`)
-      setNewName('')
-    } else if (registered(persons, newName, 'number')) {
-      alert('Number is already registered')
-      setNewNum('')
-    } else if (newName === '' || newNum === '' || !Number(newNum))
-        alert('Please input a valid name and phone number!')
+    if (checkRegis()) 
+      return
     else {
       const newPerson = {
         name: newName,
         number: newNum,
-        id: persons.length + 1
       }
 
-      setPersons(persons.concat(newPerson))
-      setNewName('')
+      personTool
+        .addContact(newPerson)
+        .then(returnedRes => {
+          setPersons(persons.concat(returnedRes))
+          setNewName('')
+          setMes(`Added ${newName}`)
+          setTimeout(() => {
+            setMes(null)
+          }, 5000)
+        })
     }
+  }
+
+  const deletePerson = (name, id) => {
+    personTool
+      .delContact(id)
+      .then(res => {
+          if (window.confirm(`Do you want to delete ${name}?`)) {
+            setPersons(persons.filter(p => p.id !== id))
+          }
+        }
+      )
   }
 
   const changeFilter = (event) => setFilter(event.target.value)
 
-  const regexPattern = filter
-  const regexFlags = 'i'
-  const dynamicRegex = new RegExp(regexPattern, regexFlags)
+  const dynamicRegex = new RegExp(filter, 'i')
 
   const toShow = filter.length > 0 
   ? persons.filter(person => dynamicRegex.test(person.name))
@@ -61,10 +73,54 @@ const App = () => {
   const trackNewNum = (event) => setNewNum(event.target.value)
 
   const registered = (arr, val, prop) => arr.some(i => i[prop] === val)
+  const checkRegis = () => {
+    if (registered(persons, newName, 'name') && newNum !== '') {
+      if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+        alterInfo()
+        setNewName('')
+        setNewNum('')
+        return true
+      }
+        
+    } else if (registered(persons, newNum, 'number')) {
+      alert('Number is already registered')
+      setNewNum('')
+      return true
+    } else if (newName === '' || newNum === '' || !Number(newNum)) {
+        alert('Please input a valid name and phone number!')
+        return true
+    }
+    else
+      return false
+  } 
+
+  
+const alterInfo = () => {
+ 
+  const person = persons.find(p => p.name == newName)
+  const changedPerson = { ...person, number: newNum }
+
+  const personId = person.id
+
+  console.log(person, person.id)
+
+  personTool
+    .update(personId, changedPerson)
+    .then(res => {
+      setPersons(persons.map(person => person.id !== personId ? person : res))
+    })
+    .catch(error => {
+      setMes(`Information of ${newName} has already been removed from the server. Please re-add the person!`)
+      setTimeOut(() => setMes(null), 5000)
+      setPersons(persons.filter(p => p.name !== newName))
+    })
+}
+
 
   return (
     <div>
-      <h2>Phonebook</h2>
+      <h1>Phonebook</h1>
+      <Notification message={message}/>
 
       <Filter changeFilter={changeFilter} filter={filter}/>
 
@@ -75,7 +131,7 @@ const App = () => {
       
       <h3>Numbers</h3>
 
-      <Persons toShow={toShow}/>
+      <Persons toShow={toShow} delPerson={deletePerson}/>
 
     </div>
   )
