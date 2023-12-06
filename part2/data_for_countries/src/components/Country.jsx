@@ -1,3 +1,9 @@
+import axios from 'axios'
+import { useEffect } from 'react'
+
+const api_key = import.meta.env.VITE_SOME_KEY
+console.log(api_key)
+
 const Country = ({ country, handleShow }) => {
 
   if (country.length == 1) {
@@ -26,6 +32,32 @@ const Country = ({ country, handleShow }) => {
 } 
 
 const CountryInfo = ({ country }) => {
+
+    const geoUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${country.capital[0]}&limit=1&appid=${api_key}`
+
+    let lon;
+    let lat;
+
+    const weatherUrl = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&appid=${api_key}`
+
+    useEffect(() => {
+        axios
+            .get(geoUrl)
+            .then(res => {
+                console.log(res.data, res.data[0].lon)
+                lon = res.data[0].lon
+                lat = res.data[0].lat
+            })
+    })
+
+    // useEffect(() => {
+    //     if (lat && lon) {
+    //         axios
+    //             .get(weatherUrl)
+    //             .then
+    //     }
+    // }, [lat, lon])
+   
 
     const language = []
 

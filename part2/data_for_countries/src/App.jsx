@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-import { Country, CountryInfo } from './components/Country'
+import { Country } from './components/Country'
 
 function App() {
   const [filter, setFilter] = useState('')
