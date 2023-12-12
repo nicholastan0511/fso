@@ -5,6 +5,7 @@ const cors = require('cors')
 
 app.use(express.json())
 app.use(cors())
+app.use(express.static('dist'))
 
 app.use(morgan(function (tokens, req, res) {
   console.log(req.body, typeof req.body)
@@ -44,6 +45,10 @@ let persons = [
         "number": "39-23-6423122"
     }  
 ]
+
+app.get('/', (req, res) => {
+  res.send(<h3>sup</h3>)
+})
 
 app.get('/api/persons', (req, res) => {
   res.json(persons)

@@ -41,6 +41,7 @@ const App = () => {
         .then(returnedRes => {
           setPersons(persons.concat(returnedRes))
           setNewName('')
+          setNewNum('')
           setMes(`Added ${newName}`)
           setTimeout(() => {
             setMes(null)
@@ -55,6 +56,7 @@ const App = () => {
       .then(res => {
           if (window.confirm(`Do you want to delete ${name}?`)) {
             setPersons(persons.filter(p => p.id !== id))
+            setMes(`deleted ${name} from the phonebook`)
           }
         }
       )
