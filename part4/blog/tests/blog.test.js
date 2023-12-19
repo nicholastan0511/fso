@@ -70,3 +70,37 @@ test('blog comes with valid title and url', async () => {
    .send(newBlog)
    .expect(400)
 })
+
+test('delete a blog', async () => {
+  const startingBlogs = await helper.getData()
+  const blogToDelete = startingBlogs[0]
+
+  console.log(blogToDelete)
+
+  await api
+   .delete(`/api/blogs/${blogToDelete.id}`)
+   .expect(204)
+
+  const endingBlogs = await helper.getData()
+  expect(endingBlogs).toHaveLength(helper.initialBlogs.length - 1)
+
+  const titles = endingBlogs.map(blog => blog.title)
+  expect(titles).not.toContain(blogToDelete.title)
+})
+
+test('update a blog', async () => {
+  const blogs = await helper.getData()
+  const blogToUpdate = blogs[0]
+
+  const response = await api
+    .put(`/api/blogs/${blogToUpdate.id}`)
+    .send({ likes: 2, test: 2000 })
+
+  expect(response.body.likes).toBe(2)
+
+})
+
+
+afterAll(async () => {
+  await mongoose.connection.close()
+})
