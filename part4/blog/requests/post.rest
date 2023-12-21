@@ -1,10 +1,11 @@
 POST  http://localhost:3001/api/blogs
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRhd2dnZyIsImlkIjoiNjU4NDMzZWVkOTA0ZmMwOWNhZWViZmY0IiwiaWF0IjoxNzAzMTYyODc2fQ.uImD-Ts9sMU-1I4srN08PfWKVtUzgKj1rLja3wzwFiQ
 
 {
-  "title": "Another Day Another Blog",
+  "title": "A Blog for Token Authorization",
   "author": "nicz",
   "url": "test",
   "likes": 101,
-  "user": "6582e61ed677aa7249f0d320"
+  "user": "658433eed904fc09caeebff4"
 }
