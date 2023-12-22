@@ -9,18 +9,12 @@ blogsRouter.get('', async (request, response) => {
   response.json(blogs)
 })
 
-const getTokenFrom = req => {
-  const authorization = req.get('authorization')
-  if (authorization && authorization.startsWith('Bearer ')) {
-    return authorization.replace('Bearer ', '')
-  }
-  return null
-}
-
 blogsRouter.post('', async (request, response) => {
   const body = request.body
 
-  const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
+  console.log(request.token)
+
+  const decodedToken = jwt.verify(request.token, process.env.SECRET)
 
   if (!decodedToken.id) {
     return response.status(401).json({ error: 'token invalid' })
@@ -42,8 +36,27 @@ blogsRouter.post('', async (request, response) => {
   response.status(201).json(savedBlog)
 })
 
+blogsRouter.get('/:id', async (req, res) => {
+  const blog = await Blog.findById(req.params.id)
+
+  res.json(blog)
+}) 
+
 blogsRouter.delete('/:id', async (req, res) => {
-  await Blog.findByIdAndDelete(req.params.id)
+  const decodedToken = jwt.verify(req.token, process.env.SECRET)
+
+  if (!decodedToken.id) {
+    return res.status(401).json({ error: 'token invalid' })
+  }
+
+  const user = await User.findById(decodedToken.id)
+  const blogToDelete = await Blog.findById(req.params.id)
+
+  if (!user.id.toString() === blogToDelete.user.toString())
+    return res.status(401).json({ error: 'invalid user' })
+
+  await Blog.deleteOne({ _id: blogToDelete._id })
+
   res.status(204).end()
 })
 
