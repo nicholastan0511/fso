@@ -1,10 +1,10 @@
 POST  http://localhost:3001/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRhd2dnZyIsImlkIjoiNjU4NDMzZWVkOTA0ZmMwOWNhZWViZmY0IiwiaWF0IjoxNzAzMTYyODc2fQ.uImD-Ts9sMU-1I4srN08PfWKVtUzgKj1rLja3wzwFiQ
+# Authorization: Bearer yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRhd2dnZyIsImlkIjoiNjU4NDMzZWVkOTA0ZmMwOWNhZWViZmY0IiwiaWF0IjoxNzAzMTYyODc2fQ.uImD-Ts9sMU-1I4srN08PfWKVtUzgKj1rLja3wzwFiQ
 
 {
-  "title": "A Blog for Token Authorization",
-  "author": "nicz",
+  "title": "Middleware",
+  "author": "Nicholas",
   "url": "test",
   "likes": 101,
   "user": "658433eed904fc09caeebff4"
