@@ -17,7 +17,7 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs(blogs)
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -39,7 +39,7 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch(error) {
-      setErrorMes(`invalid username or password!`)
+      setErrorMes('invalid username or password!')
       setTimeout(() => {
         setErrorMes(null)
       }, 5000)
@@ -55,7 +55,6 @@ const App = () => {
   }
 
   const sortByLikes = [...blogs.sort((a, b) => b.likes - a.likes)]
-  
   console.log(sortByLikes)
 
   const blogList = () => {

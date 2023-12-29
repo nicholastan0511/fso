@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect } from 'react'
 import blogService from '../services/blogs'
 
 const BlogTitle = ({ blog }) => (
-    <div>
-      {blog.title}
-    </div>  
+  <div>
+    {blog.title}
+  </div>  
 )
 
 const BlogInfo = ({ blog, user, handleRemove }) => {
