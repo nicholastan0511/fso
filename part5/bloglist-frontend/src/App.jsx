@@ -1,20 +1,19 @@
-import { useState, useEffect } from 'react'
-import Blog from './components/Blog'
+import { useState, useEffect, useRef } from 'react'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Create from './components/Create'
 import Error from './components/Error'
+import Togglable from './components/Togglable'
+import { BlogTitle } from './components/Blog'
+import { BlogInfo } from './components/Blog'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
   const [errorMes, setErrorMes] = useState(null)
- 
+
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs(blogs)
@@ -47,17 +46,36 @@ const App = () => {
     }
   }
 
+  const blogListRef = useRef()
+
+  const blogStyle = {
+    padding: 15,
+    border: 'solid',
+    marginBottom: 10,
+  }
+
+  const sortByLikes = [...blogs.sort((a, b) => b.likes - a.likes)]
+  
+  console.log(sortByLikes)
+
   const blogList = () => {
     return (
       <div>
         <h2>Blog List</h2>
-        <Create handleBlog={handleBlog} title={title} setTitle={setTitle} author={author} setAuthor={setAuthor} url={url} setUrl={setUrl} blogs={blogs} setBlogs={setBlogs} />
         <div>{user.name} logged in 
           <button onClick={logout}>logout</button>
         </div>
-        {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
-      )}
+        <Togglable buttonLabel='Create New Blog' ref={blogListRef}>
+          <Create handleBlog={handleBlog} user={user} />
+        </Togglable>
+          {blogs.map(blog =>
+            <div style={blogStyle} key={`${blog.id}div`}>
+              <BlogTitle blog={blog} key={blog.id}/>
+              <Togglable buttonLabel='view' key={`${blog.id}tog`}>
+                <BlogInfo key={blog.id} blog={blog} user={user} handleRemove={handleRemove}/>
+              </Togglable>
+            </div>
+          )}
       </div>
     )
   }
@@ -99,18 +117,21 @@ const App = () => {
     console.log('logged out')
   }
 
-  const handleBlog = async (e) => {
-    e.preventDefault()
+  const handleBlog = async (title, author, url) => {
     try {
-      const response = await blogService.create({ title, author, url })
+      blogListRef.current.toggleVisibility()
+      const response = await blogService.create({
+        title: title,
+        user: user.id,
+        url: url,
+        author: author
+      })
       setBlogs(blogs.concat(response))
       setErrorMes(`${title} added`)
       setTimeout(() => {
         setErrorMes(null)
       }, 5000)
-      setAuthor('')
-      setUrl('')
-      setTitle('')
+      
     } catch (error) {
       setErrorMes('Please fill in all the fields')
       setTimeout(() => {
@@ -118,7 +139,17 @@ const App = () => {
       }, 5000 )
     }
   }
-  
+
+  const handleRemove = async (blogToRemove) => {
+    try {
+      console.log(blogToRemove)
+      await blogService.remove(blogToRemove)
+      setBlogs(blogs.filter(blog => blog.id !== blogToRemove.id))
+    } catch (error) {
+      console.log(error.mesage)
+    }
+  }
+
   return (
     <div>
       <Error mes={errorMes}/>

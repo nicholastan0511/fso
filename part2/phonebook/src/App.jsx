@@ -47,6 +47,12 @@ const App = () => {
             setMes(null)
           }, 5000)
         })
+        .catch(error => {
+          setMes(`${error.response.data.error}`)
+          setTimeout(() => {
+            setMes(null)
+          }, 5000)
+        })
     }
   }
 
@@ -83,12 +89,13 @@ const App = () => {
         setNewNum('')
         return true
       }
+      return true
         
     } else if (registered(persons, newNum, 'number')) {
       alert('Number is already registered')
       setNewNum('')
       return true
-    } else if (newName === '' || newNum === '' || !Number(newNum)) {
+    } else if (newName === '' || newNum === '') {
         alert('Please input a valid name and phone number!')
         return true
     }
