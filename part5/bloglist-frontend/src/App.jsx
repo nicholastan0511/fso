@@ -69,9 +69,9 @@ const App = () => {
         </Togglable>
           {blogs.map(blog =>
             <div style={blogStyle} key={`${blog.id}div`}>
-              <BlogTitle blog={blog} key={blog.id}/>
+              <BlogTitle blog={blog} key={blog.id} />
               <Togglable buttonLabel='view' key={`${blog.id}tog`}>
-                <BlogInfo key={blog.id} blog={blog} user={user} handleRemove={handleRemove}/>
+                <BlogInfo key={blog.id} blog={blog} user={user} handleRemove={handleRemove} />
               </Togglable>
             </div>
           )}

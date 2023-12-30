@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react'
 import blogService from '../services/blogs'
 
 const BlogTitle = ({ blog }) => (
-  <div>
+  <div className='blogTitle'>
     {blog.title}
+    {blog.author}
   </div>  
 )
 
@@ -40,9 +41,8 @@ const BlogInfo = ({ blog, user, handleRemove }) => {
 
   return (
     <div>
-      <div>{blog.author}</div>
-      <div>{blog.url}</div>
-      <div>
+      <div className='blogUrl'>{blog.url}</div>
+      <div className='blogLikes'>
         {likes}
         <button onClick={() => handleLike(blog)}>like</button>
       </div>
