@@ -68,7 +68,7 @@ const App = () => {
           <Create handleBlog={handleBlog} user={user} />
         </Togglable>
           {blogs.map(blog =>
-            <div style={blogStyle} key={`${blog.id}div`}>
+            <div style={blogStyle} key={`${blog.id}div`} className='blog'>
               <BlogTitle blog={blog} key={blog.id} />
               <Togglable buttonLabel='view' key={`${blog.id}tog`}>
                 <BlogInfo key={blog.id} blog={blog} user={user} handleRemove={handleRemove} />
@@ -104,7 +104,7 @@ const App = () => {
               setPassword(target.value)
             }} />
           </div>
-          <button type='submit'>Login</button>
+          <button id='login-button' type='submit'>Login</button>
         </form>
       </div>
     )

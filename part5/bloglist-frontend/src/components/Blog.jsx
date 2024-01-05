@@ -10,10 +10,27 @@ const BlogTitle = ({ blog }) => (
 
 const BlogInfo = ({ blog, user, handleRemove }) => {
   const [likes, setLikes] = useState(0)
+  const [username, setUsername] = useState('')
   
   useEffect(() => {
     setLikes(blog.likes)
-  }, [])
+
+    const getUser = async () => {
+      const response = await blogService.getUser(blog.user)
+      return response.username
+    }
+  
+    const fetchUsername = async () => {
+      if (!blog.user.username) {
+        const res = await getUser()
+        console.log('i get called for', blog.title)
+        setUsername(res)
+      } else
+        setUsername(blog.user.username)
+    }
+
+    fetchUsername()
+  }, [blog])
 
   const handleLike = async (newObj) => {
     try {
@@ -26,18 +43,14 @@ const BlogInfo = ({ blog, user, handleRemove }) => {
     }
   }
 
-  let username = ''
-  const defineUsername = (val) => {
-    username = val;
-  }
-
   //react won't jump to catch even though an error has occurred when a
   //new blog is added
-  try {
-    defineUsername(blog.user.username ? blog.user.username : user.username)
-  } catch(error) {
-    defineUsername(user.username)
-  }
+
+  console.log(username, blog.title)
+
+  const showRemove = username === user.username
+    ? true
+    : false
 
   return (
     <div>
@@ -47,9 +60,12 @@ const BlogInfo = ({ blog, user, handleRemove }) => {
         <button onClick={() => handleLike(blog)}>like</button>
       </div>
       <div>{username}</div>
-      <div>
-        <button onClick={() => handleRemove(blog)}>remove</button>
-      </div>
+      {showRemove 
+        ? <div>
+            <button onClick={() => handleRemove(blog)} id='rmvButton'>remove</button>
+          </div>
+        : null
+      }     
     </div>
   )
 }

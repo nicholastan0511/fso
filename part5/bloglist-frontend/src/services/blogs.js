@@ -38,4 +38,10 @@ const remove = async (newObj) => {
   return response.data
 }
 
-export default { getAll, setToken, create, like, remove }
+const getUser = async (id) => {
+  const response = await axios.get(`/api/users/${id}`)
+
+  return response.data
+}
+
+export default { getAll, setToken, create, like, remove, getUser }
