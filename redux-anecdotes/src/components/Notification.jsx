@@ -9,8 +9,6 @@ const Notification = () => {
 
   const notification = useSelector(state => state.notification)
 
-  console.log(notification)
-
   return (
     <div style={notification ? style : { display: 'none' }}>
       {notification}
