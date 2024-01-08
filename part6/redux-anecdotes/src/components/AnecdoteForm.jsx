@@ -1,20 +1,15 @@
 import { useDispatch } from 'react-redux'
-import { createNew } from '../reducers/anecdoteReducer'
-import { notification } from '../reducers/notifReducer'
-import anecService from '../services/anec'
+import { createAnec } from '../reducers/anecdoteReducer'
+import { setNotification } from '../reducers/notifReducer'
 
 const AnecForm = () => {
   const dispatch = useDispatch()
   const createHandler = async (e) => {
     e.preventDefault()
     const content = e.target.anec.value
-    const newAnec = await anecService.createNew(content)
-    dispatch(createNew(newAnec))
-    dispatch(notification(`${e.target.anec.value} added`))
+    dispatch(createAnec(content))
+    dispatch(setNotification(`${content} added`, 5))
     e.target.anec.value = ''
-    setTimeout(() => {
-      dispatch(notification(null))
-    }, 5000)
   }  
 
   return (

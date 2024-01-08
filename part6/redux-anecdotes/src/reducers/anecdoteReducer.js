@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-
-const getId = () => (100000 * Math.random()).toFixed(0)
+import anecService from '../services/anec'
 
 const anecSlice = createSlice({
   name: 'anecs',
@@ -10,8 +9,9 @@ const anecSlice = createSlice({
       state.push(action.payload)
     },
     vote (state, action) {
-      const id = action.payload
+      const id = action.payload.id
       const toChange = state.find(n => n.id === id)
+      console.log(toChange)
       const changed = {
         ...toChange,
         votes: toChange.votes + 1
@@ -27,4 +27,26 @@ const anecSlice = createSlice({
 })
 
 export const { createNew, vote, setAnecs } = anecSlice.actions
+
+export const initializeAnecs = () => {
+  return async dispatch => {
+    const anecs = await anecService.getAll()
+    dispatch(setAnecs(anecs))
+  }
+}
+
+export const createAnec = (content) => {
+  return async dispatch => {
+    const newAnec = await anecService.createNew(content)
+    dispatch(createNew(newAnec))
+  }
+}
+
+export const voteAnec = (anecVoted) => {
+  return async dispatch => {
+    const updatedAnec = await anecService.vote(anecVoted)
+    dispatch(vote(updatedAnec))
+  }
+}
+
 export default anecSlice.reducer
