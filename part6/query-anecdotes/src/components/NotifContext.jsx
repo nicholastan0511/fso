@@ -34,8 +34,17 @@ export const useNotifVal = () => {
 }
 
 export const useNotifDispatch = () => {
-  const notifValAndDispatch = useContext(NotifContext)
-  return notifValAndDispatch[1]
+  const notifDispatch = useContext(NotifContext)[1]
+
+  const dispatchNotification = (type, payload, time) => {
+    notifDispatch({ type, payload });
+
+    setTimeout(() => {
+      notifDispatch({ type: 'RESET' });
+    }, time * 1000);
+  };
+
+  return dispatchNotification
 }
 
 export default NotifContext

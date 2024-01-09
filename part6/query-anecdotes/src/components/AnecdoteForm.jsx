@@ -15,7 +15,7 @@ const AnecdoteForm = () => {
       queryClient.setQueryData(['anecdotes'], anecs.concat(newAnec))
     },
     onError: () => {
-      notifDispatch({ type: 'ERROR', payload: 'anecdote too short, must have length 5 or more' })
+      notifDispatch('ERROR', 'anecdote must have length of 5 or more!', 5)
     }
   })
 
@@ -24,10 +24,7 @@ const AnecdoteForm = () => {
     const content = event.target.anecdote.value
     event.target.anecdote.value = ''
     newAnecMutation.mutate({ content, votes: 0 })
-    notifDispatch({ type: 'CREATE', payload: content })
-    setTimeout(() => {
-      notifDispatch({ type: 'RESET' })
-    }, 5000)
+    notifDispatch('CREATE', content, 5)
 }
 
   return (

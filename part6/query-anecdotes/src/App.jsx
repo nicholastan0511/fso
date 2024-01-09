@@ -36,10 +36,7 @@ const App = () => {
 
   const handleVote = (anecdote) => {
     voteMutation.mutate({ ...anecdote, votes: anecdote.votes + 1 })
-    notifDispatch({ type: 'VOTE', payload: anecdote.content })
-    setTimeout(() => {
-      notifDispatch({ type: 'RESET' })
-    }, 5000);
+    notifDispatch('VOTE', anecdote.content, 5)
     console.log('voted for ' + anecdote.content)
   }
 
