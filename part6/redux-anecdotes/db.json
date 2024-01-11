@@ -1,24 +1,39 @@
 {
   "anecs": [
     {
+      "id": "1",
       "content": "Json-server is a great way to test frontend backend connection.",
-      "votes": 349,
-      "id": 1
+      "votes": 357
     },
     {
+      "id": "2",
       "content": "Don is a great way to test frontend backend connection.",
-      "votes": 12084,
-      "id": 2
+      "votes": 12099
     },
     {
+      "id": "3",
       "content": "Mama is a great way to test frontend backend connection.",
-      "votes": 1,
-      "id": 3
+      "votes": 16
     },
     {
+      "id": "4",
       "content": "Dominic Torrettooooo",
-      "votes": 0,
-      "id": 4
+      "votes": 7
+    },
+    {
+      "id": "e600",
+      "content": "nicholas",
+      "votes": 16
+    },
+    {
+      "id": "b72c",
+      "content": "dasdas",
+      "votes": 3
+    },
+    {
+      "id": "28ef",
+      "content": "Nicholas",
+      "votes": 12
     }
   ]
 }
