@@ -5,6 +5,7 @@ import { BlogTitle, BlogInfo } from "./Blog";
 import { useRef } from "react";
 import { setNotif, resetNotifAfter } from "../reducers/notifReducer";
 import { createNewBlog, deleteBlog } from "../reducers/blogReducer";
+import { logout } from "../reducers/userReducer";
 
 const BlogList = (props) => {
   const dispatch = useDispatch();
@@ -43,9 +44,9 @@ const BlogList = (props) => {
     }
   };
 
-  const logout = () => {
+  const logOut = () => {
     window.localStorage.removeItem("loggedBlogUser");
-    setUser(null);
+    dispatch(logout());
     console.log("logged out");
   };
 
@@ -57,7 +58,7 @@ const BlogList = (props) => {
       <h2>Blog List</h2>
       <div>
         {user.name} logged in
-        <button onClick={logout}>logout</button>
+        <button onClick={logOut}>logout</button>
       </div>
       <Togglable buttonLabel="Create New Blog" ref={blogListRef}>
         <Create handleBlog={handleBlog} user={user} />

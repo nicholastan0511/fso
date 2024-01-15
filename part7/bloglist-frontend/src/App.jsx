@@ -27,6 +27,12 @@ const App = () => {
     }
   }, []);
 
+  //set user when logged in
+  useEffect(() => { 
+    blogService.setToken(user.token);
+    window.localStorage.setItem("loggedBlogUser", JSON.stringify(user));
+  }, [user])
+
   return (
     <div>
       <Error />
