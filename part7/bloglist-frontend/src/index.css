@@ -1,0 +1,11 @@
+:root {
+  font-size: 15px;
+}
+
+.error {
+  background-color: red;
+  border: 5px solid brown;
+  border-radius: 10px;
+  font-size: 1.5rem;
+  padding: 10px;
+}
