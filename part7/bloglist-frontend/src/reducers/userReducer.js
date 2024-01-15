@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import loginService from "../services/login"
+import loginService from "../services/login";
 
 const userSlice = createSlice({
   name: "user",
@@ -9,8 +9,8 @@ const userSlice = createSlice({
       return action.payload;
     },
     logout(state, action) {
-      return ''
-    }
+      return "";
+    },
   },
 });
 
@@ -18,8 +18,8 @@ export const { setUser, logout } = userSlice.actions;
 export default userSlice.reducer;
 
 export const login = (username, password) => {
-  return async dispatch => {
-    const user = await loginService.login({ username, password })
-    dispatch(setUser(user))
-  }
-}
+  return async (dispatch) => {
+    const user = await loginService.login({ username, password });
+    dispatch(setUser(user));
+  };
+};

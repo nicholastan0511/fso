@@ -6,6 +6,7 @@ import { useRef } from "react";
 import { setNotif, resetNotifAfter } from "../reducers/notifReducer";
 import { createNewBlog, deleteBlog } from "../reducers/blogReducer";
 import { logout } from "../reducers/userReducer";
+import { useNavigate } from "react-router-dom";
 
 const BlogList = (props) => {
   const dispatch = useDispatch();
@@ -17,6 +18,11 @@ const BlogList = (props) => {
     border: "solid",
     marginBottom: 10,
   };
+  const navigate = useNavigate();
+
+  if (user === "") {
+    navigate("/login");
+  }
 
   const handleBlog = async (title, author, url) => {
     try {
@@ -44,22 +50,8 @@ const BlogList = (props) => {
     }
   };
 
-  const logOut = () => {
-    window.localStorage.removeItem("loggedBlogUser");
-    dispatch(logout());
-    console.log("logged out");
-  };
-
-  console.log(blogs[blogs.length - 1])
-
-  console.log("im rerendered");
   return (
     <div>
-      <h2>Blog List</h2>
-      <div>
-        {user.name} logged in
-        <button onClick={logOut}>logout</button>
-      </div>
       <Togglable buttonLabel="Create New Blog" ref={blogListRef}>
         <Create handleBlog={handleBlog} user={user} />
       </Togglable>

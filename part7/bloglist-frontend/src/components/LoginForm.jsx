@@ -2,18 +2,24 @@ import { useState, useEffect } from "react";
 import { setNotif, resetNotifAfter } from "../reducers/notifReducer";
 import { login } from "../reducers/userReducer";
 import { useDispatch, useSelector } from "react-redux";
-import blogService from '../services/blogs'
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+  const navigate = useNavigate();
+
+  //   if (user !== '') {
+  //     navigate('/')
+  //   }
 
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
-      dispatch(login(username, password))
+      dispatch(login(username, password));
       setUsername("");
       setPassword("");
     } catch (error) {

@@ -12,10 +12,10 @@ const BlogTitle = ({ blog }) => (
 const BlogInfo = ({ blog, user, handleRemove }) => {
   const [username, setUsername] = useState("");
 
-  const dispatch = useDispatch()
-  const likes = useSelector(state => state.blogs.find(n => n.id === blog.id).likes)
-
-  console.log(likes)
+  const dispatch = useDispatch();
+  const likes = useSelector(
+    (state) => state.blogs.find((n) => n.id === blog.id).likes,
+  );
 
   useEffect(() => {
     const getUser = async () => {
@@ -24,13 +24,13 @@ const BlogInfo = ({ blog, user, handleRemove }) => {
     };
 
     const fetchUsername = async () => {
-      try{ 
+      try {
         if (!blog.user.username) {
           const res = await getUser();
           setUsername(res);
         } else setUsername(blog.user.username);
-      } catch(error) {
-        setUsername('')
+      } catch (error) {
+        setUsername("");
       }
     };
 
@@ -39,7 +39,7 @@ const BlogInfo = ({ blog, user, handleRemove }) => {
 
   const handleLike = async (newObj) => {
     try {
-      dispatch(likeBlog(newObj))
+      dispatch(likeBlog(newObj));
     } catch (error) {
       console.log(error.message);
     }
