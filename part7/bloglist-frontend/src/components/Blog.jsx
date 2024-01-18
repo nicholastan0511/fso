@@ -1,14 +1,16 @@
 import { likeBlog } from "../reducers/blogReducer";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { addComment } from "../reducers/blogReducer";
+import { deleteBlog } from "../reducers/blogReducer";
 
 const Blog = ({ blogs, user }) => {
   const id = useParams().id;
   const blog = blogs.find((blog) => blog.id === id);
 
   const [comment, setComment] = useState("");
+  const navigate = useNavigate()
 
   if (!blog) return null;
 
@@ -27,6 +29,7 @@ const Blog = ({ blogs, user }) => {
   const handleRemove = async (blogToRemove) => {
     try {
       dispatch(deleteBlog(blogToRemove));
+      navigate('/')
     } catch (error) {
       console.log(error.mesage);
     }

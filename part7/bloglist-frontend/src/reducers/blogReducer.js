@@ -12,6 +12,7 @@ const blogSlice = createSlice({
       return state.concat(action.payload);
     },
     removeBlog(state, action) {
+      console.log(action.payload)
       return state.filter((blog) => blog.id !== action.payload.id);
     },
     like(state, action) {
