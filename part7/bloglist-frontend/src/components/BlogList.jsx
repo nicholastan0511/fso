@@ -1,12 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
 import Togglable from "./Togglable";
 import Create from "./Create";
-import { BlogTitle, BlogInfo } from "./Blog";
 import { useRef } from "react";
 import { setNotif, resetNotifAfter } from "../reducers/notifReducer";
 import { createNewBlog, deleteBlog } from "../reducers/blogReducer";
-import { logout } from "../reducers/userReducer";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const BlogList = (props) => {
   const dispatch = useDispatch();
@@ -42,14 +40,6 @@ const BlogList = (props) => {
     }
   };
 
-  const handleRemove = async (blogToRemove) => {
-    try {
-      dispatch(deleteBlog(blogToRemove));
-    } catch (error) {
-      console.log(error.mesage);
-    }
-  };
-
   return (
     <div>
       <Togglable buttonLabel="Create New Blog" ref={blogListRef}>
@@ -57,15 +47,9 @@ const BlogList = (props) => {
       </Togglable>
       {blogs.map((blog) => (
         <div style={blogStyle} key={`${blog.id}div`} className="blog">
-          <BlogTitle blog={blog} key={blog.id} />
-          <Togglable buttonLabel="view" key={`${blog.id}tog`}>
-            <BlogInfo
-              key={blog.id}
-              blog={blog}
-              user={user}
-              handleRemove={handleRemove}
-            />
-          </Togglable>
+          <Link to={`/blogs/${blog.id}`}>
+            {blog.title} by {blog.author}
+          </Link>
         </div>
       ))}
     </div>

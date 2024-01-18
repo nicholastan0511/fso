@@ -6,6 +6,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import notifReducer from "./reducers/notifReducer";
 import blogReducer from "./reducers/blogReducer";
 import userReducer from "./reducers/userReducer";
+import usersReducer from "./reducers/usersReducer";
 import { BrowserRouter as Router } from "react-router-dom";
 
 const store = configureStore({
@@ -13,6 +14,7 @@ const store = configureStore({
     notification: notifReducer,
     blogs: blogReducer,
     user: userReducer,
+    users: usersReducer,
   },
 });
 

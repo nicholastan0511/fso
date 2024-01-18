@@ -1,41 +1,21 @@
-import { useState, useEffect } from "react";
-import blogService from "../services/blogs";
 import { likeBlog } from "../reducers/blogReducer";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useState } from "react";
+import { useParams } from "react-router-dom";
+import { addComment } from "../reducers/blogReducer";
 
-const BlogTitle = ({ blog }) => (
-  <div className="blogTitle">
-    {blog.title} by {blog.author}
-  </div>
-);
+const Blog = ({ blogs, user }) => {
+  const id = useParams().id;
+  const blog = blogs.find((blog) => blog.id === id);
 
-const BlogInfo = ({ blog, user, handleRemove }) => {
-  const [username, setUsername] = useState("");
+  const [comment, setComment] = useState('')
+
+  if (!blog) 
+    return null
+
+  const comments = !blog.comments ? [] : blog.comments
 
   const dispatch = useDispatch();
-  const likes = useSelector(
-    (state) => state.blogs.find((n) => n.id === blog.id).likes,
-  );
-
-  useEffect(() => {
-    const getUser = async () => {
-      const response = await blogService.getUser(blog.user);
-      return response.username;
-    };
-
-    const fetchUsername = async () => {
-      try {
-        if (!blog.user.username) {
-          const res = await getUser();
-          setUsername(res);
-        } else setUsername(blog.user.username);
-      } catch (error) {
-        setUsername("");
-      }
-    };
-
-    fetchUsername();
-  }, [blog]);
 
   const handleLike = async (newObj) => {
     try {
@@ -45,28 +25,53 @@ const BlogInfo = ({ blog, user, handleRemove }) => {
     }
   };
 
-  //react won't jump to catch even though an error has occurred when a
-  //new blog is added
+  const handleRemove = async (blogToRemove) => {
+    try {
+      dispatch(deleteBlog(blogToRemove));
+    } catch (error) {
+      console.log(error.mesage);
+    }
+  };
+
+  const handleComment = (event) => {
+    event.preventDefault()
+    console.log(comment)
+    dispatch(addComment(comment, blog.id))
+  }
+
+  //initialize username as current user if this blog does not contain a user property
+  const username = blog.user ? blog.user.username : user.username;
 
   const showRemove = username === user.username ? true : false;
 
   return (
     <div>
-      <div className="blogUrl">{blog.url}</div>
-      <div className="blogLikes">
-        {likes}
+      <h1>
+        {blog.title} {blog.author}
+      </h1>
+      <div>{blog.url}</div>
+      <div>
+        {blog.likes}
         <button onClick={() => handleLike(blog)}>like</button>
       </div>
-      <div>{username}</div>
+      <div>added by {username}</div>
       {showRemove ? (
         <div>
-          <button onClick={() => handleRemove(blog)} id="rmvButton">
-            remove
-          </button>
+          <button onClick={() => handleRemove(blog)}>remove</button>
         </div>
       ) : null}
+      <h2>Comments</h2>
+      <form onSubmit={handleComment}>
+        <input type="text" onChange={({ target }) => setComment(target.value)} />
+        <button type="submit">add comment</button>
+      </form>
+      <ul>
+        {comments.map(comment => (
+          <li>{comment}</li> 
+        ))}
+      </ul>
     </div>
   );
 };
 
-export { BlogTitle, BlogInfo };
+export default Blog;
