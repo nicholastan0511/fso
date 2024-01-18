@@ -1,20 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { setNotif, resetNotifAfter } from "../reducers/notifReducer";
 import { login } from "../reducers/userReducer";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { TextField, Button } from "@mui/material";
 
 const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
-  const navigate = useNavigate();
-
-  //   if (user !== '') {
-  //     navigate('/')
-  //   }
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -33,9 +27,8 @@ const LoginForm = () => {
       <h2>Login to application</h2>
       <form onSubmit={handleLogin}>
         <div>
-          Username
-          <input
-            type="text"
+          <TextField
+            label="username"
             value={username}
             name="Username"
             onChange={({ target }) => {
@@ -44,8 +37,8 @@ const LoginForm = () => {
           />
         </div>
         <div>
-          Password
-          <input
+          <TextField
+            label="password"
             type="password"
             value={password}
             name="Password"
@@ -54,9 +47,14 @@ const LoginForm = () => {
             }}
           />
         </div>
-        <button id="login-button" type="submit">
+        <Button
+          id="login-button"
+          type="submit"
+          variant="contained"
+          color="primary"
+        >
           Login
-        </button>
+        </Button>
       </form>
     </div>
   );

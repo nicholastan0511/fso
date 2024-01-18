@@ -8,12 +8,11 @@ const Blog = ({ blogs, user }) => {
   const id = useParams().id;
   const blog = blogs.find((blog) => blog.id === id);
 
-  const [comment, setComment] = useState('')
+  const [comment, setComment] = useState("");
 
-  if (!blog) 
-    return null
+  if (!blog) return null;
 
-  const comments = !blog.comments ? [] : blog.comments
+  const comments = !blog.comments ? [] : blog.comments;
 
   const dispatch = useDispatch();
 
@@ -34,10 +33,11 @@ const Blog = ({ blogs, user }) => {
   };
 
   const handleComment = (event) => {
-    event.preventDefault()
-    console.log(comment)
-    dispatch(addComment(comment, blog.id))
-  }
+    event.preventDefault();
+    console.log(comment);
+    dispatch(addComment(comment, blog.id));
+    setComment("");
+  };
 
   //initialize username as current user if this blog does not contain a user property
   const username = blog.user ? blog.user.username : user.username;
@@ -62,12 +62,16 @@ const Blog = ({ blogs, user }) => {
       ) : null}
       <h2>Comments</h2>
       <form onSubmit={handleComment}>
-        <input type="text" onChange={({ target }) => setComment(target.value)} />
+        <input
+          type="text"
+          onChange={({ target }) => setComment(target.value)}
+          value={comment}
+        />
         <button type="submit">add comment</button>
       </form>
       <ul>
-        {comments.map(comment => (
-          <li>{comment}</li> 
+        {comments.map((comment) => (
+          <li>{comment}</li>
         ))}
       </ul>
     </div>

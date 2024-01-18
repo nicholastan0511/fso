@@ -22,16 +22,17 @@ const blogSlice = createSlice({
       );
     },
     comment(state, action) {
-      return state.map(blog => 
+      return state.map((blog) =>
         blog.id !== action.payload.id
           ? blog
-          : { ...blog, comments: [...blog.comments, action.payload.comment] }
-      )
-    }
+          : { ...blog, comments: [...blog.comments, action.payload.comment] },
+      );
+    },
   },
 });
 
-export const { setBlogs, createBlog, removeBlog, like, comment } = blogSlice.actions;
+export const { setBlogs, createBlog, removeBlog, like, comment } =
+  blogSlice.actions;
 export default blogSlice.reducer;
 
 export const initBlogs = () => {
@@ -64,10 +65,12 @@ export const likeBlog = (blog) => {
 
 export const addComment = (mes, id) => {
   return async (dispatch) => {
-    await blogService.comment(mes, id)
-    dispatch(comment({
-      comment: mes,
-      id,
-    }))
-  }
-}
+    await blogService.comment(mes, id);
+    dispatch(
+      comment({
+        comment: mes,
+        id,
+      }),
+    );
+  };
+};

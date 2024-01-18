@@ -5,6 +5,14 @@ import { useRef } from "react";
 import { setNotif, resetNotifAfter } from "../reducers/notifReducer";
 import { createNewBlog, deleteBlog } from "../reducers/blogReducer";
 import { Link, useNavigate } from "react-router-dom";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  Paper,
+} from "@mui/material";
 
 const BlogList = (props) => {
   const dispatch = useDispatch();
@@ -45,13 +53,20 @@ const BlogList = (props) => {
       <Togglable buttonLabel="Create New Blog" ref={blogListRef}>
         <Create handleBlog={handleBlog} user={user} />
       </Togglable>
-      {blogs.map((blog) => (
-        <div style={blogStyle} key={`${blog.id}div`} className="blog">
-          <Link to={`/blogs/${blog.id}`}>
-            {blog.title} by {blog.author}
-          </Link>
-        </div>
-      ))}
+      <TableContainer component={Paper}>
+        <Table>
+          <TableBody>
+            {blogs.map((blog) => (
+              <TableRow key={blog.id}>
+                <Link to={`/blogs/${blog.id}`}>
+                  <TableCell>{blog.title}</TableCell>
+                </Link>
+                <TableCell>{blog.author}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
   );
 };
