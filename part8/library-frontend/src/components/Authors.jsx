@@ -1,9 +1,9 @@
-const Authors = (props) => {
-    if (!props.show) {
-      return null
-    }
+import { Link } from "react-router-dom"
+import EditAuthor from "./EditAuthor"
 
-    console.log(props.authors)
+const Authors = (props) => {
+
+    console.log(props.authors, props.authors[0].id)
   
     return (
       <div>
@@ -20,10 +20,16 @@ const Authors = (props) => {
                 <td>{a.name}</td>
                 <td>{a.born}</td>
                 <td>{a.bookCount}</td>
+                <td>
+                  <button>
+                    <Link to={`/authors/${a.id}`}>edit</Link>
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
+        <EditAuthor authors={props.authors} />
       </div>
     )
   }
