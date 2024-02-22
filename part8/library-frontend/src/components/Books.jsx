@@ -10,6 +10,8 @@ const Books = (props) => {
     bookGenres.push(...book.genres)
   })
 
+
+  //filter duplicated genres
   const genres = bookGenres.filter((val, i, self) => self.indexOf(val) === i)
 
   if (genre !== '') {
@@ -19,7 +21,8 @@ const Books = (props) => {
   return (
     <div>
       <h2>books</h2>
-
+      {genre ? `current genre: ${genre}`
+        : null}
       <table>
         <tbody>
           <tr>
@@ -42,6 +45,9 @@ const Books = (props) => {
             {genre}
           </button>
         ))}
+        <button onClick={() => setGenre(props.user.favoriteGenre)}>
+          show favorite
+        </button>
         <button onClick={() => setGenre('')}>
           all genres
         </button>
