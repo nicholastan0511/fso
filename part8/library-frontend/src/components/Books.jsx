@@ -1,22 +1,32 @@
 import { useState } from "react"
+import { ALL_BOOKS } from "../queries"
+import { useQuery } from "@apollo/client"
 
 const Books = (props) => {
   const [genre, setGenre] = useState('')
 
   const bookGenres = []
-  let books = props.books
 
   props.books.forEach(book => {
     bookGenres.push(...book.genres)
   })
 
-
   //filter duplicated genres
   const genres = bookGenres.filter((val, i, self) => self.indexOf(val) === i)
 
-  if (genre !== '') {
-    books = books.filter(book => book.genres.includes(genre))
-  }
+  const { loading, error, data } = useQuery(ALL_BOOKS, {
+    variables: {
+      genre
+    }
+  })
+
+  if (loading) return <div>fetching data...</div>
+  if (error)
+    console.log(error.message)
+
+  console.log(data)
+
+  const fetchedBooks = data.allBooks
 
   return (
     <div>
@@ -30,7 +40,7 @@ const Books = (props) => {
             <th>author</th>
             <th>published</th>
           </tr>
-          {books.map((book) => (
+          {fetchedBooks.map((book) => (
             <tr key={book.title}>
               <td>{book.title}</td>
               <td>{book.author.name}</td>
