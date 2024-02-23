@@ -26,7 +26,6 @@ const Books = (props) => {
 
   console.log(data)
 
-  const fetchedBooks = data.allBooks
 
   return (
     <div>
@@ -40,7 +39,7 @@ const Books = (props) => {
             <th>author</th>
             <th>published</th>
           </tr>
-          {fetchedBooks.map((book) => (
+          {props.books.map((book) => (
             <tr key={book.title}>
               <td>{book.title}</td>
               <td>{book.author.name}</td>
