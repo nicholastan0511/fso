@@ -24,18 +24,40 @@ const Books = (props) => {
   if (error)
     console.log(error.message)
 
-  console.log(data)
+  const fetchedBooks = data.allBooks
+
+  console.log(fetchedBooks)
 
 
   return (
     <div>
       <h2>books</h2>
-      {genre ? `current genre: ${genre}`
-        : null}
-      <table>
+      {genre ? 
+      <div>
+        current genre: {genre}
+        <table>
         <tbody>
           <tr>
-            <th></th>
+            <th>title</th>
+            <th>author</th>
+            <th>published</th>
+          </tr>
+          {fetchedBooks.map((book) => (
+            <tr key={book.title}>
+              <td>{book.title}</td>
+              <td>{book.author.name}</td>
+              <td>{book.published}</td>
+            </tr>
+          ))}
+        </tbody>
+        </table>  
+      </div>
+        : 
+      <div>
+         <table>
+        <tbody>
+          <tr>
+            <th>title</th>
             <th>author</th>
             <th>published</th>
           </tr>
@@ -48,6 +70,10 @@ const Books = (props) => {
           ))}
         </tbody>
       </table>
+      </div>  
+        
+      }
+     
       <div>
         {genres.map(genre => (
           <button onClick={() => setGenre(genre)} key={genre}>
