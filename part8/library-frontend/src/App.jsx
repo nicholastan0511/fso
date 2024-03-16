@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
-import { useQuery } from '@apollo/client'
-import { ALL_AUTHORS, ALL_BOOKS, USER } from './queries'
+import { useQuery, useMutation, useSubscription } from '@apollo/client'
+import { ALL_AUTHORS, ALL_BOOKS, BOOK_ADDED, USER } from './queries'
 import { Routes, Link, Route } from 'react-router-dom'
 import Author from './components/Author'
 import LoginForm from './components/LoginForm'
@@ -18,6 +18,13 @@ const App = () => {
   const user = useQuery(USER)
   const client = useApolloClient()
 
+  useSubscription(BOOK_ADDED, {
+    onData: ({ data }) => {
+      const bookAdded = data.data.bookAdded
+      window.alert(`${bookAdded.title} added by ${user.data.me.username}`)
+    }
+  })
+
   const notify = (mes) => {
     setErrorMessage(mes)
     setTimeout(() => {
@@ -27,6 +34,7 @@ const App = () => {
 
   useEffect(() => {
     setToken(localStorage.getItem('user-token'))
+    
   }, [])
 
   const logout = () => {
@@ -51,8 +59,9 @@ const App = () => {
   if (authors_results.loading || books_results.loading || user.loading) 
     return <div>fetching data...</div>
 
-  console.log(authors_results.data, books_results.data, user.data)
 
+  
+  
   return (
     <div>
       <div>

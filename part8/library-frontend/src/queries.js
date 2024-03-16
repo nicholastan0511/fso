@@ -52,7 +52,8 @@ export const ADD_BOOK = gql`
         name
       },
       published,
-      genres
+      genres,
+      id
     }
   }
 `
@@ -84,6 +85,20 @@ export const REGISTER = gql`
       username,
       favoriteGenre,
       id
+    }
+  }
+`
+
+export const BOOK_ADDED = gql`
+  subscription {
+    bookAdded {
+      title,
+      author {
+        name,
+        bookCount
+      },
+      published,
+      genres
     }
   }
 `
