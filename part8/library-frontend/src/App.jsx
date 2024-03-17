@@ -10,6 +10,22 @@ import LoginForm from './components/LoginForm'
 import Notify from './components/Notify'
 import { useApolloClient } from '@apollo/client'
 
+export const updateCache = (cache, query, bookAdded) => {
+  const uniqByTitle = (a) => {
+    let seen = new Set()
+    return a.filter((item) => {
+      let k = item.title
+      return seen.has(k) ? false : seen.add(k)
+    })
+  }
+
+  cache.updateQuery(query, ({ allBooks }) => {
+    return {
+      allBooks: uniqByTitle(allBooks.concat(bookAdded))
+    }
+  }) 
+}
+
 const App = () => {
   const [token, setToken] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
@@ -22,6 +38,7 @@ const App = () => {
     onData: ({ data }) => {
       const bookAdded = data.data.bookAdded
       window.alert(`${bookAdded.title} added by ${user.data.me.username}`)
+      updateCache(client.cache, { query: ALL_BOOKS }, bookAdded )
     }
   })
 
