@@ -98,7 +98,8 @@ export const BOOK_ADDED = gql`
         bookCount
       },
       published,
-      genres
+      genres,
+      id
     }
   }
 `

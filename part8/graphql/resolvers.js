@@ -21,21 +21,21 @@ const resolvers = {
           return Book.find({ author: args.author, genres: { $elemMatch: { $eq: args.genre } } })
         }
       },
-      allAuthors: async () => Author.find({}),
+      allAuthors: async () => {
+        console.log('Author.find')
+        return Author.find({}).populate('books')
+      },
       me: (root, args, context) => {
         return context.currentUser
       } 
     },
     Author: {
       bookCount: async (root) => {
-        const books = await Book.find({}).populate('author')
-        const booksByAuthor = books.filter(book => book.author.name === root.name)
-        return booksByAuthor.length
-      }
-    },
-    Subscription: {
-      bookAdded: {
-        subscribe: () => pubsub.asyncIterator('BOOK_ADDED')
+        // console.log('Book.find')
+
+        const booksLen = root.books.length
+        // const booksByAuthor = books.filter(book => book.author.name === root.name)
+        return booksLen
       }
     },
     Mutation: {
@@ -83,9 +83,26 @@ const resolvers = {
           })
         }
 
-        pubsub.publish('BOOK_ADDED', { bookAdded: book })
-  
-        return Book.findOne({ title: args.title }).populate('author')
+        //save book information in the author object
+        author.books = author.books.concat(book._id)
+        try {
+          await author.save()
+        } catch (error) {
+          throw new GraphQLError('saving book failed', {
+            extensions: {
+              code: 'BAD_USER_INPUT',
+              invalidArgs: args.title,
+              error
+            }
+          })
+        }
+          
+        const newBook = await Book.findOne({ title: args.title }).populate('author')
+
+        console.log(newBook)
+        pubsub.publish('BOOK_ADDED', { bookAdded: newBook })
+      
+        return newBook
       },
       editAuthor: async (root, args) => {
         const currentUser = context.currentUser
@@ -153,7 +170,11 @@ const resolvers = {
     
         return { value: jwt.sign(userForToken, process.env.JWT_SECRET) }
       },
-  
+    },
+    Subscription: {
+      bookAdded: {
+        subscribe: () => pubsub.asyncIterator('BOOK_ADDED')
+      }
     },
   }
 
