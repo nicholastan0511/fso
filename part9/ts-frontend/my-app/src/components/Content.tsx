@@ -1,24 +1,12 @@
-interface props {
-  content: ContentType[];
-};
+import { CoursePart } from "../App";
+import Part from "./Part";
 
-interface ContentType {
-  name: string;
-  exerciseCount: number;
-}
-
-const Content = (props: props) => {
+const Content = ({ content }: { content: CoursePart[] }) => {
   return (
     <>
-      <p>
-        {props.content[0].name} {props.content[0].exerciseCount}
-      </p>
-      <p>
-        {props.content[1].name} {props.content[1].exerciseCount}
-      </p>
-      <p>
-        {props.content[2].name} {props.content[2].exerciseCount}
-      </p>
+      {content.map(part => 
+        <Part part={part} key={part.name}/>
+      )}
     </>
   )
 };
