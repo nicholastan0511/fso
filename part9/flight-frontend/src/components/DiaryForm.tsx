@@ -59,16 +59,20 @@ const DiaryForm = ({ diaries, setDiaries }: { diaries: DiaryEntry[], setDiaries:
             <label htmlFor="sunny">Sunny</label>
           </div>
           <div>
-            <input type="radio" name="poor" value="poor" onChange={() => setWeather('poor')} />
-            <label htmlFor="poor">Poor</label>
+            <input type="radio" name="cloudy" value="cloudy" onChange={() => setWeather('cloudy')} />
+            <label htmlFor="cloudy">Cloudy</label>
           </div>
           <div>
-            <input type="radio" name="poor" value="poor" onChange={() => setWeather('poor')} />
-            <label htmlFor="poor">Poor</label>
+            <input type="radio" name="Stormy" value="Stormy" onChange={() => setWeather('Stormy')} />
+            <label htmlFor="Stormy">Poor</label>
           </div>
           <div>
-            <input type="radio" name="poor" value="poor" onChange={() => setWeather('poor')} />
-            <label htmlFor="poor">Poor</label>
+            <input type="radio" name="rainy" value="rainy" onChange={() => setWeather('rainy')} />
+            <label htmlFor="rainy">Rainy</label>
+          </div>
+          <div>
+            <input type="radio" name="windy" value="windy" onChange={() => setWeather('windy')} />
+            <label htmlFor="windy">Windy</label>
           </div>
         </div>
         <div>
