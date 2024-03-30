@@ -8,6 +8,20 @@ router.get('/', (_req, res) => {
   res.send(patientService.getPatientsExcSsn())
 })
 
+router.get('/:id', (req, res) => {
+  const id  = req.params.id;
+  try {
+    const patient = patientService.fetchOnePatient(id);
+    res.send(patient);
+  } catch (error: unknown) {
+    let errMes = 'Err! '
+    if (error instanceof Error) {
+      errMes += error.message;
+    }
+    res.status(400).send(errMes);
+  }
+})
+
 router.post('/', (req, res) => {
   try {
     console.log(req.body)
@@ -22,7 +36,7 @@ router.post('/', (req, res) => {
       errMes += error.message
     }
 
-    res.status(400).send(errMes)
+    res.status(400).send(errMes);
   }
 })
 

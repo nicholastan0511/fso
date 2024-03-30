@@ -16,7 +16,8 @@ const getPatientsExcSsn = (): PatientEntryExcSsn[] => {
 const addNewPatient = (newPatient: NewPatientEntry): PatientEntry => {
   const newEntry = {
     id: uuid(),
-    ...newPatient
+    ...newPatient,
+    entries: []
   }
 
   patientData.push(newEntry)
@@ -24,7 +25,20 @@ const addNewPatient = (newPatient: NewPatientEntry): PatientEntry => {
   return newEntry;
 }
 
+const fetchOnePatient = (id: string): PatientEntry => {
+  const patient = patientData.find(patient => patient.id == id);
+  if (patient && !patient.entries) {
+    return {
+      ...patient,
+      entries: []
+    };
+  } else {
+    throw new Error ('malformatted id');
+  }
+}
+
 export default {
   getPatientsExcSsn,
-  addNewPatient
+  addNewPatient,
+  fetchOnePatient
 };
