@@ -10,14 +10,14 @@ const DiaryForm = ({ diaries, setDiaries }: { diaries: DiaryEntry[], setDiaries:
   const [weather, setWeather] = useState('');
   const [comment, setComment] = useState('')
 
-  const [notification, setNotification] = useState<any>('')
+  const [notification, setNotification] = useState<string>('')
 
   const diaryCreation = (e: React.SyntheticEvent) => {
     e.preventDefault()
     addDiary({ date, weather, visibility, comment })
       .then(data => setDiaries(diaries.concat(data)))
       .catch ((error: AxiosError) => {
-        if (axios.isAxiosError(error)) {
+        if (axios.isAxiosError(error) && isString(error.response?.data)) {
           setNotification(error.response?.data)
           setTimeout(() => {
             setNotification('')
@@ -31,13 +31,45 @@ const DiaryForm = ({ diaries, setDiaries }: { diaries: DiaryEntry[], setDiaries:
       <Notification notification={notification} />
       <form onSubmit={diaryCreation}>
         <div>
-          Date: <input type="text" onChange={({ target }) => setDate(target.value)} value={date} />
+          Date: <input type="date" onChange={({ target }) => setDate(target.value)} value={date} />
         </div>
         <div>
-          Visibility: <input type="text" onChange={({ target }) => setVisibility(target.value)} value={visibility} />
+          Visibility: 
+          <div>
+            <input type="radio" name="great" value="great" onChange={() => setVisibility('great')} />
+            <label htmlFor="great">Great</label>
+          </div>
+          <div>
+            <input type="radio" name="good" value="good" onChange={() => setVisibility('good')} />
+            <label htmlFor="good">Great</label>
+          </div>
+          <div>
+            <input type="radio" name="ok" value="ok" onChange={() => setVisibility('ok')} />
+            <label htmlFor="ok">Ok</label>
+          </div>
+          <div>
+            <input type="radio" name="poor" value="poor" onChange={() => setVisibility('poor')} />
+            <label htmlFor="poor">Poor</label>
+          </div>
         </div>
         <div>
-          Weather: <input type="text" onChange={({ target }) => setWeather(target.value)} value={weather} />
+          Weather:
+          <div>
+            <input type="radio" name="sunny" value="sunny" onChange={() => setWeather('sunny')} />
+            <label htmlFor="sunny">Sunny</label>
+          </div>
+          <div>
+            <input type="radio" name="poor" value="poor" onChange={() => setWeather('poor')} />
+            <label htmlFor="poor">Poor</label>
+          </div>
+          <div>
+            <input type="radio" name="poor" value="poor" onChange={() => setWeather('poor')} />
+            <label htmlFor="poor">Poor</label>
+          </div>
+          <div>
+            <input type="radio" name="poor" value="poor" onChange={() => setWeather('poor')} />
+            <label htmlFor="poor">Poor</label>
+          </div>
         </div>
         <div>
           Comment: <input type="text" onChange={({ target }) => setComment(target.value)} value={comment} />
@@ -46,6 +78,10 @@ const DiaryForm = ({ diaries, setDiaries }: { diaries: DiaryEntry[], setDiaries:
       </form>
     </div>
   )
+}
+
+const isString = (text: unknown): text is string=> {
+  return Boolean(text instanceof String || typeof text === 'string') 
 }
 
 export default DiaryForm;
