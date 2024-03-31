@@ -1,10 +1,14 @@
-POST  http://localhost:3001/api/patients
+POST  http://localhost:3001/api/patients/d2773336-f723-11e9-8f0b-362b9e155667/entries
 Content-Type: application/json
 
 {
-  "name": "Nicholas",
-  "dateOfBirth": "",
-  "ssn": "dasj",
-  "gender": "male",
-  "occupation": "student"
+    "id": "d811e46d-70b3-4d90-b090-4535c7cf8fb1",
+    "date": "2015-01-02",
+    "type": "Hospital",
+    "specialist": "MD House",
+    "diagnosisCodes": ["S62.5"],
+    "description": "Healing time appr. 2 weeks. patient doesn't remember how he got the injury.",
+    "discharge": {
+      "criteria": "Thumb has healed."
+    }
 }

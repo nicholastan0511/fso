@@ -1,14 +1,15 @@
-import { PatientEntryExcSsn, PatientEntry, NewPatientEntry } from "../types";
+import { PatientEntryExcSsn, PatientEntry, NewPatientEntry, Entry } from "../types";
 import patientData from '../../data/patients';
 import { v1 as uuid } from 'uuid' 
 
 const getPatientsExcSsn = (): PatientEntryExcSsn[] => {
-  return patientData.map(({ id, name, dateOfBirth, gender, occupation }) => ({
+  return patientData.map(({ id, name, dateOfBirth, gender, occupation, entries }) => ({
       id,
       name,
       dateOfBirth,
       gender,
-      occupation  
+      occupation,
+      entries
     })
   );
 }
@@ -27,18 +28,24 @@ const addNewPatient = (newPatient: NewPatientEntry): PatientEntry => {
 
 const fetchOnePatient = (id: string): PatientEntry => {
   const patient = patientData.find(patient => patient.id == id);
-  if (patient && !patient.entries) {
+  if (patient && patient.entries) {
     return {
       ...patient,
-      entries: []
     };
   } else {
     throw new Error ('malformatted id');
   }
 }
 
+const addNewDiagnosis = (id: string, obj: Entry): Entry => {
+  const patient = patientData.find(patient => patient.id === id);
+  patient?.entries.push(obj);
+  return obj;
+}
+
 export default {
   getPatientsExcSsn,
   addNewPatient,
-  fetchOnePatient
+  fetchOnePatient,
+  addNewDiagnosis
 };

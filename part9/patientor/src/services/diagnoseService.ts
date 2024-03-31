@@ -6,5 +6,5 @@ const getDiagnoses = (): DiagnosisEntry[] => {
 }
 
 export default {
-  getDiagnoses
+  getDiagnoses,
 }
