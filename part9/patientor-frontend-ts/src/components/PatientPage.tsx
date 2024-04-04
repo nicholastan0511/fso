@@ -6,6 +6,7 @@ import FemaleIcon from '@mui/icons-material/Female';
 import MaleIcon from '@mui/icons-material/Male';
 import { Diagnosis } from "../types";
 import EntryDetails from "./Entry";
+import EntryForm from "./EntryForm";
 
 const PatientPage = ({ diagnoses } : { diagnoses: Diagnosis[] }) => {
   const { id } = useParams();
@@ -38,6 +39,8 @@ const PatientPage = ({ diagnoses } : { diagnoses: Diagnosis[] }) => {
           </>
         ))}
       </div>
+      <EntryForm id={patient.id} setPatient={setPatient} patient={patient}/>
+      
       
     </div>
   )
