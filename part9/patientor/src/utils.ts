@@ -1,4 +1,5 @@
 import { NewPatientEntry, Gender, Entry, DiagnosisEntry, Discharge, EntryWithout, HospitalEntry, SickLeave, HealthCheckRating } from "./types";
+const { v1: uuid } = require('uuid');
 
 const toNewPatientEntry = (obj: unknown): NewPatientEntry => {
   if (!obj || typeof obj !== 'object')
@@ -58,10 +59,10 @@ const isGender = (gender: string): gender is Gender => {
 
 const toNewEntry = (obj: unknown): Entry => {
   if (obj && typeof obj == 'object') {
-    if ('type' in obj && 'id' in obj && 'description' in obj && 'date' in obj && 'specialist' in obj && 'diagnosisCodes' in obj) {
+    if ('type' in obj && 'description' in obj && 'date' in obj && 'specialist' in obj && 'diagnosisCodes' in obj) {
       const type = parseType(obj.type)
       const newEntry: EntryWithout = {
-        id: parseId(obj.id),
+        id: uuid(),
         description: parseDesc(obj.description),
         date: parseDate(obj.date),
         specialist: parseSpecialist(obj.specialist),
@@ -90,11 +91,11 @@ const toNewEntry = (obj: unknown): Entry => {
           }
           throw new Error('Err! Missing fields for occupational healthcare entry!')
         case 'HealthCheck':
-          if ('healhCheckRating' in obj) {
+          if ('healthCheckRating' in obj) {
             return {
               ...newEntry,
               type,
-              healthCheckRating: parseHealth(obj.healhCheckRating)
+              healthCheckRating: parseHealth(obj.healthCheckRating)
             }
           }
           throw new Error('Err! Missing fields for health check entry!')
@@ -107,11 +108,11 @@ const toNewEntry = (obj: unknown): Entry => {
   throw new Error('Missing object!')
 }
 
-const parseId = (id: unknown): string => {
-  if (!isString(id))
-    throw new Error('Incorrect or missing id');
-  return id;
-}
+// const parseId = (id: unknown): string => {
+//   if (!isString(id))
+//     throw new Error('Incorrect or missing id');
+//   return id;
+// }
 
 const parseDesc = (desc: unknown): string => {
   if (!isString(desc))
