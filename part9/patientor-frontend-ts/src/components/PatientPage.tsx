@@ -34,12 +34,12 @@ const PatientPage = ({ diagnoses } : { diagnoses: Diagnosis[] }) => {
       <div>
         <h3>{patient.entries[0] ? 'Entries' : null}</h3>
         {patient.entries.map(entry => (
-          <>
+          
             <EntryDetails diagnoses={diagnoses} entry={entry} key={entry.id}/>
-          </>
+          
         ))}
       </div>
-      <EntryForm id={patient.id} setPatient={setPatient} patient={patient}/>
+      <EntryForm id={patient.id} setPatient={setPatient} patient={patient} diagnoses={diagnoses}/>
       
       
     </div>
