@@ -170,8 +170,9 @@ const EntryForm = ({ id, setPatient, patient, diagnoses } : Props) => {
          : type == 'Hospital'
          ?
          <div>
+            <p>Date of Discharge</p>
             <TextField
-                label='Discharge date'
+      
                 name="discharge"
                 type="date"
                 onChange={({ target }) => setDischarge(target.value)}
@@ -200,8 +201,11 @@ const EntryForm = ({ id, setPatient, patient, diagnoses } : Props) => {
               margin="normal"
               fullWidth
             />
+
+            <h3>Sick Leave</h3>
+            <p>Start Date</p>
             <TextField
-                label='Start Date'
+                
                 name="startDate"
                 type="date"
                 onChange={({ target }) => setStart(target.value)}
@@ -209,8 +213,9 @@ const EntryForm = ({ id, setPatient, patient, diagnoses } : Props) => {
                 margin="normal"
                 fullWidth
             />
+            <p>End Date</p>
             <TextField
-                label='End Date'
+                
                 name="endDate"
                 type="date"
                 onChange={({ target }) => setEnd(target.value)}
